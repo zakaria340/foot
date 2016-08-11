@@ -1,6 +1,4 @@
 football
-========
-
 A Symfony project created on August 4, 2016, 3:08 pm.
 
 php bin/console doctrine:database:create
