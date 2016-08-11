@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="welcome">
+                <h1><span>Welcome to Football</span></h1>
+            </div>
+            <div id="status">
+                <table>
+                    <tbody>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+
+                    {% for key, fixturess in fixtures %}
+                        {% set date = '' %}
+
+                        {% for key, fixture in fixturess.fixtures %}
+
+                            {% if (date != fixture.date|date("l m/d/Y")) %}
+                                {% set date = fixture.date|date("l m/d/Y") %}
+                                <tr>
+                                    <td><h3> {{ fixture.date|date("l m/d/Y") }} </h3></td>
+                                </tr>
+                            {% endif %}
+                            <tr class="bet">
+                                <td class="receiverDate">
+                                    {{ fixture.date|date("H:i") }}
+                                </td>
+                                <td class="receiverCountry">
+                                    {{ fixture.homeTeamName }}
+                                </td>
+                                <td class="receiverScore">
+                                    <input name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                           value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
+                                           maxlength="2" size="1">
+                                </td>
+                                <td class="dash">-</td>
+                                <td class="foreignerScore">
+                                    <input name="{{ codematchs ~ key }}[scoreAway]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                           value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreAway|trim }}{% endif %}"
+                                           maxlength="2" size="1">
+                                </td>
+                                <td class="foreignerCountry">
+                                    {{ fixture.awayTeamName }}
+                                </td>
+                                <td class="sameScore">
+                                    {% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).BetScors|trim }}% bet same score{% endif %}
+                                </td>
+                                <td class="sameResult">
+                                    {% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).resultMatch|trim }}% bet same result{% endif %}
+                                </td>
+                            </tr>
+                            {% if fixture.status != "TIMED" and fixture.status != "SCHEDULED" %}
+                                <tr class="gameInfos">
+                                    <td class="receiverDate">
+                                    </td>
+                                    <td class="scoreGuess">
+                                    </td>
+                                    <td class="receiverScore">
+                                        ({{ fixture.result.goalsHomeTeam }}
+                                        &nbsp;</td>
+                                    <td class="dash">-</td>
+                                    <td class="foreignerScore">
+                                        &nbsp;{{ fixture.result.goalsAwayTeam }})
+                                    </td>
+
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        {% if dataBet.id is defined %}
+                            <input type="hidden" value="{{ dataBet.id }}"
+                                   name="betuser">
+                        {% endif %}
+                    {% endfor %}
+
+                    {{ form_end(form) }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

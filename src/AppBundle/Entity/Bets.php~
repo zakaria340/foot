@@ -1,0 +1,140 @@
+<?php
+// src/AppBundle/Entity/User.php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+use AppBundle\Entity\User;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="bets")
+ */
+class Bets{
+  /**
+   * @ORM\Id
+   * @ORM\Column(type="integer")
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  protected $id;
+  /**
+   * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", cascade={"remove"})
+   * @ORM\JoinColumn(onDelete="CASCADE")
+   */
+  private $owner;
+
+
+  /**
+   * @var text
+   *
+   * @ORM\Column(name="data", type="text")
+   */
+  private $data;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="fixture", type="string", length=255)
+   */
+  private $fixture;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="matchday", type="string", length=255)
+   */
+  private $matchday;
+
+  public function __construct() {
+    parent::__construct();
+  }
+
+
+  /**
+   * Set data
+   *
+   * @param string $data
+   *
+   * @return Bets
+   */
+  public function setData($data) {
+    $this->data = $data;
+
+    return $this;
+  }
+
+  /**
+   * Get data
+   *
+   * @return string
+   */
+  public function getData() {
+    return $this->data;
+  }
+
+  /**
+   * Set fixture
+   *
+   * @param string $fixture
+   *
+   * @return Bets
+   */
+  public function setFixture($fixture) {
+    $this->fixture = $fixture;
+
+    return $this;
+  }
+
+  /**
+   * Get fixture
+   *
+   * @return string
+   */
+  public function getFixture() {
+    return $this->fixture;
+  }
+
+  /**
+   * Set matchday
+   *
+   * @param string $matchday
+   *
+   * @return Bets
+   */
+  public function setMatchday($matchday) {
+    $this->matchday = $matchday;
+
+    return $this;
+  }
+
+  /**
+   * Get matchday
+   *
+   * @return string
+   */
+  public function getMatchday() {
+    return $this->matchday;
+  }
+
+
+  public function getOwner()
+  {
+    return $this->owner;
+  }
+
+  public function setOwner(User $owner)
+  {
+    $this->owner = $owner;
+  }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

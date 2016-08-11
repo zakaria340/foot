@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="welcome">
+                <h1><span>Welcome to Football</span></h1>
+            </div>
+
+            <div id="status">
+                <ul>
+                    {% for competition in competitions %}
+                        <li><a href="{{ path('fixtures', {'code': competition.id}) }}">{{ competition.caption }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
