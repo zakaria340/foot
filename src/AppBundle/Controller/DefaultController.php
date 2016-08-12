@@ -47,17 +47,10 @@ class DefaultController extends Controller {
       )
       ->getForm();
     $form->handleRequest($request);
-    $apiUrl = $this->getParameter('url_football_api');
     $matchday = $this->getParameter('matchday');
-    $api_token = $this->getParameter('api_token');
     $fixtures = array();
     for ($i = 1; $i <= $matchday; $i++) {
-      $urlFixtures = $apiUrl . "competitions/$code/fixtures?matchday=$i";
-      $reqPrefs['http']['method'] = 'GET';
-      $reqPrefs['http']['header'] = "X-Auth-Token: $api_token";
-      $stream_context = stream_context_create($reqPrefs);
-      $response = file_get_contents($urlFixtures, FALSE, $stream_context);
-      $fixtures[] = json_decode($response);
+      $fixtures[] = $this->getFixtures($code, $i);
     }
     $fixtures = array_reverse($fixtures);
     $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -67,8 +60,72 @@ class DefaultController extends Controller {
       array('fixture' => $code, 'matchday' => $matchday, 'user' => $user)
     );
     $dataBet = array();
-    if ($itemEntity) {
+    if ($form->isSubmitted() && $form->isValid()) {
+      $data = $_POST;
+      unset($data['form']);
+      if (isset($data['betuser'])) {
+        $bet = $itemEntity;
+        $dataBet = [
+          'id' => $itemEntity->getId(),
+          'scores' => $_POST,
+        ];
+      }
+      else {
+        $bet = new Bet();
+      }
 
+      $em = $this->getDoctrine()->getManager();
+      $bet->setFixture($code);
+      $bet->setMatchday($matchday);
+      $bet->setUser($user);
+      if(isset($data['betuser'])){
+        foreach($bet->getScores() as $score){
+          $score->setScoreAway(trim($data[$score->getIdfootball()]['scoreAway']));
+          $score->setScoreHome(trim($data[$score->getIdfootball()]['scoreHome']));
+
+          if (trim($data[$score->getIdfootball()]['scoreAway']) > trim($data[$score->getIdfootball()]['scoreHome'])) {
+            $resultMatch = 'win';
+          }
+          elseif (trim($data[$score->getIdfootball()]['scoreAway']) == trim($data[$score->getIdfootball()]['scoreHome'])) {
+            $resultMatch = 'draw';
+          }
+          else {
+            $resultMatch = 'loose';
+          }
+          $score->setResultMatch($resultMatch);
+
+          $em->persist($score);
+          $em->flush();
+        }
+      }else{
+        foreach ($data as $key => $item) {
+          $score = new Score();
+          $score->setScoreAway(trim($item['scoreAway']));
+          $score->setScoreHome(trim($item['scoreHome']));
+          $score->setIdfootball($key);
+          $score->setBet($bet);
+          if (trim($item['scoreAway']) > trim($item['scoreHome'])) {
+            $resultMatch = 'win';
+          }
+          elseif (trim($item['scoreAway']) == trim($item['scoreHome'])) {
+            $resultMatch = 'draw';
+          }
+          else {
+            $resultMatch = 'loose';
+          }
+          $score->setResultMatch($resultMatch);
+          $em->persist($score);
+        }
+      }
+
+      unset($data['betuser']);
+      $json_data = json_encode($data);
+      $bet->setData($json_data);
+      $em->persist($bet);
+      $em->flush();
+    }
+
+    if ($itemEntity) {
       $scores = $itemEntity->getScores();
       $data = array();
       foreach ($scores as $score) {
@@ -83,55 +140,6 @@ class DefaultController extends Controller {
         'id' => $itemEntity->getId(),
         'scores' => $data,
       ];
-    }
-    if ($form->isSubmitted() && $form->isValid()) {
-      $data = $_POST;
-      unset($data['form']);
-
-      if (isset($data['betuser'])) {
-        $bet = $itemEntity;
-        $dataBet = [
-          'id' => $itemEntity->getId(),
-          'scores' => $_POST,
-        ];
-      }
-      else {
-        $bet = new Bet();
-      }
-      unset($data['betuser']);
-
-      $json_data = json_encode($data);
-      $bet->setData($json_data);
-
-      $em = $this->getDoctrine()->getManager();
-
-      $bet->setFixture($code);
-      $bet->setMatchday($matchday);
-      $bet->setUser($user);
-
-      foreach ($data as $key => $item) {
-        $score = new Score();
-        $score->setScoreAway(trim($item['scoreAway']));
-        $score->setScoreHome(trim($item['scoreHome']));
-        $score->setIdfootball($key);
-        $score->setBet($bet);
-        if (trim($item['scoreAway']) > trim($item['scoreHome'])) {
-          $resultMatch = 'win';
-        }
-        elseif (trim($item['scoreAway']) == trim($item['scoreHome'])) {
-          $resultMatch = 'draw';
-        }
-        else {
-          $resultMatch = 'loose';
-        }
-        //resultMatch
-        $score->setResultMatch($resultMatch);
-        $em->persist($score);
-      }
-
-      $em->persist($bet);
-      $em->flush();
-
     }
     $status = 0;
     if ($itemEntity) {
@@ -200,144 +208,6 @@ class DefaultController extends Controller {
     return $competitions;
   }
 
-
-  /**
-   * @Route("/cron", name="cron")
-   */
-  public function cronAction(Request $request) {
-    $listData = array();
-    $matchday = $this->getParameter('matchday');
-    $listCompetition = $this->getListCompetitions();
-
-    foreach ($listCompetition as $competition) {
-      $fixture = $this->getFixtures($competition['id'], $matchday);
-      $listData[$competition['id']] = $fixture;
-    }
-    $em = $this->getDoctrine()->getManager();
-    $itemEntity = $em->getRepository('AppBundle:Bet')->findBy(
-      array('matchday' => $matchday, 'status' => 0)
-    );
-    foreach ($itemEntity as $bet) {
-
-      $scores = $bet->getScores();
-      $dataUser = [];
-      foreach ($scores as $score) {
-        $dataUser[$score->getIdfootball()] = [
-          'scoreHome' => $score->getScoreHome(),
-          'scoreAway' => $score->getScoreAway(),
-        ];
-      }
-      $dataUser = json_decode($bet->getData(), TRUE);
-      $correctData = $listData[$bet->getFixture()];
-      $fixtureCorrectData = $correctData->fixtures;
-      $pointsToWin = $bet->getPoints();
-      $i = 0;
-      foreach ($dataUser as $key => $value) {
-        if ($value['scoreHome'] == $fixtureCorrectData[$i]->result->goalsHomeTeam && $value['scoreAway'] && $fixtureCorrectData[$i]->result->goalsAwayTeam) {
-          $pointsToWin = $pointsToWin + 5;
-        }
-        $boolCorrect = (boolean) $fixtureCorrectData[$i]->result->goalsHomeTeam - $fixtureCorrectData[$i]->result->goalsAwayTeam;
-        $boolUser = (boolean) $value['scoreHome'] - $value['scoreAway'];
-
-        if ($boolCorrect === $boolUser) {
-          $pointsToWin = $pointsToWin + 3;
-        }
-        $i++;
-      }
-      $bet->setPoints($pointsToWin);
-      $bet->setStatus(1);
-      $em->persist($bet);
-      $em->flush();
-    }
-  }
-
-  /**
-   * @Route("/cron-user", name="cronuser")
-   */
-  public function cronuserAction(Request $request) {
-    $em = $this->getDoctrine()->getManager();
-    $userEntity = $em->getRepository('AppBundle:User')->findAll();
-    foreach ($userEntity as $user) {
-      $points = 0;
-      foreach ($user->getBets() as $bet) {
-        $points += (int) ($bet->getPoints());
-      }
-      $user->setPoints($points);
-      $em->persist($user);
-      $em->flush();
-    }
-
-  }
-
-
-  /**
-   * @Route("/calcul-bet", name="calculbet")
-   */
-  public function calculguessAction(Request $request) {
-    $em = $this->getDoctrine()->getManager();
-    $matchday = $this->getParameter('matchday');
-    $itemEntity = $em->getRepository('AppBundle:Bet')->findBy(
-      array('matchday' => $matchday, 'status' => 0)
-    );
-
-    foreach ($itemEntity as $bet) {
-      $scores = $bet->getScores();
-      foreach ($scores as $score) {
-        $value = [
-          'scoreHome' => $score->getScoreHome(),
-          'scoreAway' => $score->getScoreAway(),
-        ];
-
-        $nbr = $this->calculscorebet($value, $score->getIdfootball(), $bet);
-        $nbrTotal = $this->calculscorebet($value, $score->getIdfootball());
-        $prc = $nbr * 100 / $nbrTotal;
-        $score->setBetScors($prc);
-
-        $nbrResult = $this->calculscorebet(
-          ['resultMatch' => $score->getresultMatch()],
-          $score->getIdfootball(),
-          $bet
-        );
-        $nbrTotalResult = $this->calculscorebet(
-          ['resultMatch' => $score->getresultMatch()],
-          $score->getIdfootball()
-        );
-        $prcReslut = $nbrResult * 100 / $nbrTotalResult;
-        $score->setBetResults($prcReslut);
-
-        $em->persist($score);
-        $em->flush();
-      }
-    }
-  }
-
-
-  public function calculscorebet($value, $idfootball, $bet = []) {
-    $em = $this->getDoctrine()->getManager();
-    $params = $value;
-    $params['status'] = 0;
-    $params['idfootball'] = $idfootball;
-    if (!empty($bet)) {
-      $params['bet'] = $bet;
-    }
-    $itemEntity = $em->getRepository('AppBundle:Score')->findBy($params);
-    return count($itemEntity);
-  }
-
-  /**
-   * @Route("/calcul-guess", name="calculguess")
-   */
-  public function calculresultAction(Request $request) {
-    $em = $this->getDoctrine()->getManager();
-    $matchday = $this->getParameter('matchday');
-
-    $itemEntity = $em->getRepository('AppBundle:Bet')->findBy(
-      array('matchday' => $matchday, 'status' => 0)
-    );
-
-  }
-
-
   /**
    * @Route("/rating", name="rating")
    */
@@ -354,7 +224,6 @@ class DefaultController extends Controller {
     );
   }
 
-
   /**
    * @param $code
    * @param $matchday
@@ -369,7 +238,6 @@ class DefaultController extends Controller {
     $stream_context = stream_context_create($reqPrefs);
     $response = file_get_contents($urlFixtures, FALSE, $stream_context);
     $fixtures = json_decode($response);
-
     return $fixtures;
   }
 

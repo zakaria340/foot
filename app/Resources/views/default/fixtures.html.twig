@@ -31,13 +31,13 @@
                                     {{ fixture.homeTeamName }}
                                 </td>
                                 <td class="receiverScore">
-                                    <input name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                    <input name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? '' : '' }}
                                            value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
                                            maxlength="2" size="1">
                                 </td>
                                 <td class="dash">-</td>
                                 <td class="foreignerScore">
-                                    <input name="{{ codematchs ~ key }}[scoreAway]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                    <input name="{{ codematchs ~ key }}[scoreAway]" {{ (fixture.status != "TIMED") or (status == "1") ? '' : '' }}
                                            value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreAway|trim }}{% endif %}"
                                            maxlength="2" size="1">
                                 </td>
