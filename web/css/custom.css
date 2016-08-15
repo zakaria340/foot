@@ -1,0 +1,80 @@
+.fixture .teams, .fixture .odds {
+    width: 70%;
+}
+
+.fixture .broadcaster, .fixture .stadiumName {
+    font-size: 1.8rem;
+}
+
+.stadiumName > input {
+    height: 93%;
+    width: 20%;
+}
+.stadiumName > input {
+    font-family: PremierSans-Bold,Arial,Helvetica Neue,Helvetica,sans-serif;
+    text-align: center;
+    color: #000 !important;
+
+}
+
+.fixture .odds {
+    font-family: PremierSans-Bold,Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-size: 1.6rem;
+}
+
+.fixture .odds span{
+}
+
+.fixture .predict-prc {
+    display: block;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+
+
+
+.fixture .odds-scrore:first-of-type {
+    padding-left: 0;
+    padding-right: 7.5rem;
+    text-align: right;
+    margin-left: 78px;
+}
+.fixture .odds-scrore {
+    padding-left: 7.5rem;
+    position: relative;
+    width: 40%;
+}
+
+.tablist li a {
+    border-radius: 3px 3px 0 0;
+    color: #333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.2rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s ease 0s;
+}
+.tablist li a:hover {
+    background: #e90052 none repeat scroll 0 0 !important;
+    color: #fff !important;
+}
+.tablist li:hover {
+    background: #e90052 none repeat scroll 0 0;
+    color: #fff;
+}
+.fixture .overview .oddsDraw{
+    line-height: 3rem;
+}
+.fixture .oddsDraw {
+    font-size: 1.4rem;
+}
+.fixture .oddsDraw{
+    margin-left: -3rem;
+    margin-top: -0.5rem;
+    position: absolute;
+    text-align: center;
+    width: 6rem;
+}

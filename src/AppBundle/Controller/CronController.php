@@ -72,12 +72,8 @@ class CronController extends Controller {
       $em->persist($bet);
       $em->flush();
     }
-  }
 
-  /**
-   * @Route("/cron-user", name="cronuser")
-   */
-  public function cronuserAction(Request $request) {
+
     $em = $this->getDoctrine()->getManager();
     $userEntity = $em->getRepository('AppBundle:User')->findAll();
     foreach ($userEntity as $user) {
@@ -162,7 +158,7 @@ class CronController extends Controller {
   public function getListCompetitions() {
     $competitions = [
       [
-        'id' => 395,
+        'id' => 426,
         'caption' => "Premier League 2016/17",
         "league" => "PL",
         "year" => "2016",

@@ -145,14 +145,18 @@ class DefaultController extends Controller {
     if ($itemEntity) {
       $status = $itemEntity->getStatus();
     }
+    $competitions = $this->getListCompetitions();
+
     return $this->render(
       'default/fixtures.html.twig',
       [
         'fixtures' => $fixtures,
+        'code' => $code,
         'codematchs' => $code . $matchday,
         'form' => $form->createView(),
         'dataBet' => $dataBet,
         'status' => $status,
+        'competitions' => $competitions,
       ]
     );
   }
@@ -164,7 +168,7 @@ class DefaultController extends Controller {
   public function getListCompetitions() {
     $competitions = [
       [
-        'id' => 395,
+        'id' => 426,
         'caption' => "Premier League 2016/17",
         "league" => "PL",
         "year" => "2016",

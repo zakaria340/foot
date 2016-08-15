@@ -4,10 +4,14 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <!--[if gt IE 8]><!--><link rel="stylesheet" href="http://resources-pl.pulselive.com/ver/styles/screen.css"><!--<![endif]-->
+        <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     </head>
     <body>
+    <main id="mainContent" tabindex="0">
+
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
+    </main>
     </body>
 </html>
