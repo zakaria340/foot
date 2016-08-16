@@ -16,22 +16,18 @@
     color: #000 !important;
 
 }
+.score > input {
+    font-family: PremierSans-Bold,Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-size: 1.3rem;
+    text-align: center;
+    color: #000 !important;
+
+}
 
 .fixture .odds {
     font-family: PremierSans-Bold,Arial,Helvetica Neue,Helvetica,sans-serif;
-    font-size: 1.6rem;
-}
-
-.fixture .odds span{
-}
-
-.fixture .predict-prc {
-    display: block;
     font-size: 1.2rem;
-    text-align: center;
 }
-
-
 
 
 .fixture .odds-scrore:first-of-type {
@@ -41,7 +37,7 @@
     margin-left: 78px;
 }
 .fixture .odds-scrore {
-    padding-left: 7.5rem;
+    padding-left: 9.5rem;
     position: relative;
     width: 40%;
 }
@@ -76,5 +72,108 @@
     margin-top: -0.5rem;
     position: absolute;
     text-align: center;
-    width: 6rem;
+    width: 8rem;
+}
+.fixture .score {
+    background: none;
+}
+.fixture .score, .fixture time {
+    width: 8rem;
+}
+.fixture .team {
+    padding-left: 9rem;
+}
+.fixture .team:not(:first-of-type) .badge-25 {
+    left: 6rem;
+}
+
+.detail-predicts span {
+    font-family: PremierSans-Regular,Arial,Helvetica Neue,Helvetica,sans-serif;
+    display: block;
+    font-size: 1.1rem;
+}
+
+.score .disabled {
+    background: grey;
+}
+.date-match {
+    font-family: PremierSans-Bold,Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-size: 1.6rem;
+    margin-left: 10px;
+}
+
+.badge-430 {
+    background-image: url("http://www.bundesliga.com/2016/img/sprites/liga1_2016-2017.svg");
+    background-position: 50% 0;
+    background-size: 500% 400%;
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+}
+.badge-430.FCB {
+    background-position: 0 100%;
+}
+.badge-430.BVB {
+    background-position: 50% 0;
+}
+.badge-430.F04 {
+    background-position: 0 66.6667%;
+}
+.badge-430.FCA {
+    background-position: 75% 100%;
+}
+.badge-430.SVW {
+    background-position: 75% 33.3333%;
+}
+.badge-430.WOB {
+    background-position: 75% 0;
+}
+.badge-430.M05 {
+    background-position: 25% 33.3333%;
+}
+.badge-430.SGE {
+    background-position: 75% 66.6667%;
+}
+.badge-430.HSV {
+    background-position: 0 0;
+}
+.badge-430.FCI {
+    background-position: 25% 100%;
+}
+.badge-430.EFFZEH {
+    background-position: 50% 33.3333%;
+}
+.badge-430.DAR {
+    background-position: 100% 0;
+}
+.badge-430.BMG {
+    background-position: 0 33.3333%;
+}
+.badge-430.BSC{
+    background-position: 50% 100%;
+}
+.badge-430.SCF{
+    background-position: 25% 66.6667%;
+}
+.badge-430.TSG{
+    background-position: 25% 0;
+}
+.badge-430.RBL{
+    background-position: 100% 33.3333%;
+}
+
+.badge-430.B04{
+    background-position: 50% 66.6667%;
+}
+
+.fixture .team:not(:first-of-type) .badge-430 {
+    left: 6rem;
+}
+.fixture .team:first-of-type .badge-430 {
+    right: 4rem;
+}
+.fixture .badge-430 {
+    margin-top: -12.5px;
+    position: absolute;
+    top: 50%;
 }

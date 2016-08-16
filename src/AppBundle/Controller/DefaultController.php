@@ -157,6 +157,7 @@ class DefaultController extends Controller {
         'dataBet' => $dataBet,
         'status' => $status,
         'competitions' => $competitions,
+        'LogoClubs' => $this->MappingLogoClubs(),
       ]
     );
   }
@@ -246,4 +247,47 @@ class DefaultController extends Controller {
   }
 
 
+  public function MappingLogoClubs(){
+    return [
+      'Hull City FC' => 'HUL',
+      'Leicester City FC' => 'LEI',
+      'Southampton FC' => 'SOU',
+      'Watford FC' => 'WAT',
+      'Middlesbrough FC' => 'MID',
+      'Stoke City FC' => 'STK',
+      'Everton FC' => 'EVE',
+      'Tottenham Hotspur FC' => 'TOT',
+      'Crystal Palace FC' => 'CRY',
+      'West Bromwich Albion FC' => 'WBA',
+      'Burnley FC' => 'BUR',
+      'Swansea City FC' => 'SWA',
+      'Manchester City FC' => 'MCI',
+      'Sunderland AFC' => 'SUN',
+      'AFC Bournemouth' => 'BOU',
+      'Manchester United FC' => 'MUN',
+      'Arsenal FC' => 'ARS',
+      'Liverpool FC' => 'LIV',
+      'Chelsea FC' => 'CHE',
+      'West Ham United FC' => 'WHU',
+
+      'FC Bayern München' => 'FCB',
+      'Werder Bremen' => 'SVW',
+      'FC Augsburg' => 'FCA',
+      'VfL Wolfsburg' => 'WOB',
+      'Borussia Dortmund' => 'BVB',
+      '1. FSV Mainz 05' => 'M05',
+      'Eintracht Frankfurt' => 'SGE',
+      'FC Schalke 04' => 'F04',
+      'Hamburger SV' => 'HSV',
+      'FC Ingolstadt 04' => 'FCI',
+      '1. FC Köln' => 'EFFZEH',
+      'SV Darmstadt 98' => 'DAR',
+      'Bor. Mönchengladbach' => 'BMG',
+      'Bayer Leverkusen' => 'B04',
+      'Hertha BSC' => 'BSC',
+      'SC Freiburg' => 'SCF',
+      'TSG 1899 Hoffenheim' => 'TSG',
+      'Red Bull Leipzig' => 'RBL'
+    ];
+  }
 }

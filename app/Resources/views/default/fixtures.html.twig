@@ -50,18 +50,25 @@
 
                             <a class="fixture postMatch" href="#">
                                 <span class="overview">
-                                    <span class="teamName">{{ fixture.date|date("H:i") }}</span>
+                                    <span class="date-match">{{ fixture.date|date("H:i") }}</span>
                                     <span class="teams">
                                         <span class="team"><span
                                                     class="teamName"> {{ fixture.homeTeamName }}</span> <span
-                                                    class="badge-25 t3"></span>
+                                                    class="badge-{{ (code == 426) ? 25 : code  }} {{ attribute(LogoClubs, fixture.homeTeamName) is defined ? attribute(LogoClubs, fixture.homeTeamName) : '' }}"></span>
+
+
 
                                         </span>
 
                                         {% if fixture.status != "TIMED" and fixture.status != "SCHEDULED" %}
-                                            <span class="score ">{{ fixture.result.goalsHomeTeam }}
-                                                <span>
-                                                -</span>{{ fixture.result.goalsAwayTeam }}</span>
+                                            <span class="score ">
+                                            <input class="{{ (fixture.status != "TIMED") or (status == "1") ? 'disabled' : '' }}" name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                                   value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
+                                                   maxlength="2" size="1">
+                                          <input class="{{ (fixture.status != "TIMED") or (status == "1") ? 'disabled' : '' }}" name="{{ codematchs ~ key }}[scoreAway]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                                 value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreAway|trim }}{% endif %}"
+                                                 maxlength="2" size="1">
+                                            </span>
 
                                         {% else %}
                                             <span class="score ">{{ fixture.status }}</span>
@@ -70,26 +77,25 @@
 
                                         <span class="team">
                                             <span
-                                                    class="badge-25 t14"></span> <span
+                                                    class="badge-{{ (code == 426) ? 25 : code  }}  {{ attribute(LogoClubs, fixture.awayTeamName) is defined ? attribute(LogoClubs, fixture.awayTeamName) : '' }}"></span> <span
                                                     class="teamName">{{ fixture.awayTeamName }}</span></span>
                                     </span>
-    <span class="stadiumName">
-                                              <input name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? '' : '' }}
-                                                     value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
-                                                     maxlength="2" size="1">
-                                          <input name="{{ codematchs ~ key }}[scoreAway]" {{ (fixture.status != "TIMED") or (status == "1") ? '' : '' }}
-                                                 value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreAway|trim }}{% endif %}"
-                                                 maxlength="2" size="1">
+    <span class="stadiumName detail-predicts">
+
+               <span>Odd's Of Winning home <strong>{{ fixture.odds.homeWin }}</strong></span>
+                                        <span>Odd's Of draw <strong>{{ fixture.odds.draw }}</strong></span>
+                                        <span>Odd's Of Winning away <strong>{{ fixture.odds.awayWin }}</strong></span>
+
+                            <span class="predict-prc">           {% if dataBet.scores is defined %}<strong>{{ attribute(dataBet.scores, codematchs ~ key).BetScors|trim }}% </strong> bet same score{% endif %}</span>
+
+    <span class="predict-prc">      {% if dataBet.scores is defined %}<strong>{{ attribute(dataBet.scores, codematchs ~ key).resultMatch|trim }}% </strong>  bet same result{% endif %}</span>
 
 
                                 </span>
                                     <span class="odds">
-                                        <span class="odds-scrore">{{ fixture.odds.homeWin }}</span>
-                                        <span class="oddsDraw">{{ fixture.odds.draw }}</span>
-                                        <span class="odds-scrore">{{ fixture.odds.awayWin }}</span>
-<span class="predict-prc">           {% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).BetScors|trim }}% bet same score{% endif %}</span>
-
-    <span class="predict-prc">      {% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).resultMatch|trim }}% bet same result{% endif %}</span>
+                                        <span class="odds-scrore"> ({{ fixture.result.goalsHomeTeam }}</span>
+                                        <span class="oddsDraw">-</span>
+                                        <span class="odds-scrore">{{ fixture.result.goalsAwayTeam }})</span>
 
                                     </span>
 
