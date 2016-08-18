@@ -19,10 +19,10 @@ class CronController extends Controller {
    */
   public function cronAction(Request $request) {
     $listData = array();
-    $matchday = $this->getParameter('matchday');
     $listCompetition = $this->getListCompetitions();
 
     foreach ($listCompetition as $competition) {
+      $matchday = $this->getParameter('matchday_'.$competition['id']);
       $fixture = $this->getFixtures($competition['id'], $matchday);
       $listData[$competition['id']] = $fixture;
     }
@@ -94,9 +94,8 @@ class CronController extends Controller {
    */
   public function calculguessAction(Request $request) {
     $em = $this->getDoctrine()->getManager();
-    $matchday = $this->getParameter('matchday');
     $itemEntity = $em->getRepository('AppBundle:Bet')->findBy(
-      array('matchday' => $matchday, 'status' => 0)
+      array('status' => 0)
     );
 
     foreach ($itemEntity as $bet) {

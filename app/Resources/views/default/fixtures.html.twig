@@ -21,7 +21,9 @@
         <div class="wrapper col-12 active">
             <section class="fixtures">
                 {{ form_start(form) }}
+                {{ form_widget(form.bet, { 'attr': {'class': 'btn'} }) }}
                 {{ form_widget(form) }}
+
                 {% if dataBet.id is defined %}
                     <input type="hidden" value="{{ dataBet.id }}"
                            name="betuser">
@@ -46,7 +48,7 @@
                             <ul class="matchList">
                         {% endif %}
 
-                        <li class="matchFixtureContainer">
+                        <li class="matchFixtureContainer {{ fixture.status }}">
 
                             <a class="fixture postMatch" href="#">
                                 <span class="overview">
@@ -60,7 +62,7 @@
 
                                         </span>
 
-                                        {% if fixture.status != "TIMED" and fixture.status != "SCHEDULED" %}
+                                        {% if fixture.status != "FINISHED" %}
                                             <span class="score ">
                                             <input class="{{ (fixture.status != "TIMED") or (status == "1") ? 'disabled' : '' }}" name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
                                                    value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
@@ -82,23 +84,26 @@
                                     </span>
     <span class="stadiumName detail-predicts">
 
-               <span>Odd's Of Winning home <strong>{{ fixture.odds.homeWin }}</strong></span>
+               {% if dataBet.scores is defined %}<span>Odd's Of Winning home <strong>{{ fixture.odds.homeWin }}</strong></span>
                                         <span>Odd's Of draw <strong>{{ fixture.odds.draw }}</strong></span>
                                         <span>Odd's Of Winning away <strong>{{ fixture.odds.awayWin }}</strong></span>
+               {% endif %}
 
-                            <span class="predict-prc">           {% if dataBet.scores is defined %}<strong>{{ attribute(dataBet.scores, codematchs ~ key).BetScors|trim }}% </strong> bet same score{% endif %}</span>
+                            <span class="predict-prc">           {% if dataBet.scores is defined and attribute(dataBet.scores, codematchs ~ key).resultMatch is not null %}<strong>{{ attribute(dataBet.scores, codematchs ~ key).BetScors|trim }}% </strong> bet same score{% endif %}</span>
 
-    <span class="predict-prc">      {% if dataBet.scores is defined %}<strong>{{ attribute(dataBet.scores, codematchs ~ key).resultMatch|trim }}% </strong>  bet same result{% endif %}</span>
+    <span class="predict-prc">      {% if dataBet.scores is defined and attribute(dataBet.scores, codematchs ~ key).resultMatch is not null %}<strong>{{ attribute(dataBet.scores, codematchs ~ key).resultMatch|trim }}% </strong>  bet same result{% endif %}</span>
 
 
                                 </span>
+                                    {% if fixture.status != "TIMED" and fixture.status != "SCHEDULED" %}
+
                                     <span class="odds">
                                         <span class="odds-scrore"> ({{ fixture.result.goalsHomeTeam }}</span>
                                         <span class="oddsDraw">-</span>
                                         <span class="odds-scrore">{{ fixture.result.goalsAwayTeam }})</span>
 
                                     </span>
-
+                                    {% endif %}
                                 </span>
                             </a>
                         </li>

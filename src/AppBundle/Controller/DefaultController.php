@@ -43,11 +43,11 @@ class DefaultController extends Controller {
       ->add(
         'bet',
         SubmitType::class,
-        ['label' => 'Bet']
+        ['label' => 'Save']
       )
       ->getForm();
     $form->handleRequest($request);
-    $matchday = $this->getParameter('matchday');
+    $matchday = $this->getParameter('matchday_'.$code);
     $fixtures = array();
     for ($i = 1; $i <= $matchday; $i++) {
       $fixtures[] = $this->getFixtures($code, $i);
