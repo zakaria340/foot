@@ -42,17 +42,35 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="facebook_id", type="string", nullable=true)
      */
-    private $name;
+    protected $facebook_id;
 
+    private $facebookAccessToken;
+ 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="profile_picture", type="string", length=250, nullable=true)
+     *
+     */
+    protected $profile_picture;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="facebook_id", type="string", nullable=true)
+     * @ORM\Column(name="profilepicture", type="string", length=250, nullable=true)
+     *
      */
-    protected $facebook_id;
+    protected $profilepicture;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=250, nullable=true)
+     *
+     */
+    protected $logo;
 
     /**
      * @var string
@@ -161,30 +179,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return User
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set facebookId
      *
      * @param string $facebookId
@@ -206,6 +200,25 @@ class User extends BaseUser
     public function getFacebookId()
     {
         return $this->facebook_id;
+    }
+
+    /**
+     * @param string $facebookAccessToken
+     * @return User
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
     }
 
     /**
@@ -254,5 +267,53 @@ class User extends BaseUser
     public function getTwitterId()
     {
         return $this->twitter_id;
+    }
+
+    /**
+     * Set profilePicture
+     *
+     * @param string $profilePicture
+     *
+     * @return User
+     */
+    public function setProfilePicture($profilePicture)
+    {
+        $this->profilePicture = $profilePicture;
+
+        return $this;
+    }
+
+    /**
+     * Get profilePicture
+     *
+     * @return string
+     */
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     *
+     * @return User
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }

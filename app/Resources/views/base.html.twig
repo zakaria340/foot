@@ -10,7 +10,7 @@
     <body>
     <main id="mainContent" tabindex="0">
 
-
+        <img src= "{{ dump(app.user) }}" class="img-circle" alt="User Image" />
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </main>

@@ -8,3 +8,10 @@ services:
         class: AppBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
+
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtension
+        arguments: [%pdf_directory_clubs%]
+        public: true
+        tags:
+            - { name: twig.extension }

@@ -55,8 +55,11 @@
                                     <span class="date-match">{{ fixture.date|date("H:i") }}</span>
                                     <span class="teams">
                                         <span class="team"><span
-                                                    class="teamName"> {{ fixture.homeTeamName }}</span> <span
-                                                    class="badge-{{ (code == 426) ? 25 : code  }} {{ attribute(LogoClubs, fixture.homeTeamName) is defined ? attribute(LogoClubs, fixture.homeTeamName) : '' }}"></span>
+                                                    class="teamName"> {{ fixture.homeTeamName }}</span>
+                                            <span
+                                                    class="badge-25">
+                                                <img src="{{ fixture._links.homeTeam.href|GenerateThumbnail }}">
+                                            </span>
 
 
 
@@ -79,7 +82,9 @@
 
                                         <span class="team">
                                             <span
-                                                    class="badge-{{ (code == 426) ? 25 : code  }}  {{ attribute(LogoClubs, fixture.awayTeamName) is defined ? attribute(LogoClubs, fixture.awayTeamName) : '' }}"></span> <span
+                                                    class="badge-25">
+                                                 <img src="{{ fixture._links.awayTeam.href|GenerateThumbnail }}">
+                                            </span> <span
                                                     class="teamName">{{ fixture.awayTeamName }}</span></span>
                                     </span>
     <span class="stadiumName detail-predicts">

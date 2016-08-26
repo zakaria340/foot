@@ -102,68 +102,8 @@
     margin-left: 10px;
 }
 
-.badge-430 {
-    background-image: url("http://www.bundesliga.com/2016/img/sprites/liga1_2016-2017.svg");
-    background-position: 50% 0;
-    background-size: 500% 400%;
-    display: inline-block;
-    height: 25px;
-    width: 25px;
-}
-.badge-430.FCB {
-    background-position: 0 100%;
-}
-.badge-430.BVB {
-    background-position: 50% 0;
-}
-.badge-430.F04 {
-    background-position: 0 66.6667%;
-}
-.badge-430.FCA {
-    background-position: 75% 100%;
-}
-.badge-430.SVW {
-    background-position: 75% 33.3333%;
-}
-.badge-430.WOB {
-    background-position: 75% 0;
-}
-.badge-430.M05 {
-    background-position: 25% 33.3333%;
-}
-.badge-430.SGE {
-    background-position: 75% 66.6667%;
-}
-.badge-430.HSV {
-    background-position: 0 0;
-}
-.badge-430.FCI {
-    background-position: 25% 100%;
-}
-.badge-430.EFFZEH {
-    background-position: 50% 33.3333%;
-}
-.badge-430.DAR {
-    background-position: 100% 0;
-}
-.badge-430.BMG {
-    background-position: 0 33.3333%;
-}
-.badge-430.BSC{
-    background-position: 50% 100%;
-}
-.badge-430.SCF{
-    background-position: 25% 66.6667%;
-}
-.badge-430.TSG{
-    background-position: 25% 0;
-}
-.badge-430.RBL{
-    background-position: 100% 33.3333%;
-}
-
-.badge-430.B04{
-    background-position: 50% 66.6667%;
+.badge-25 {
+    background-image: none;
 }
 
 .fixture .team:not(:first-of-type) .badge-430 {

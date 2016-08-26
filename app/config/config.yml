@@ -12,7 +12,7 @@ parameters:
     matchday_430: 1
     matchday_436: 1
     matchday_438: 1
-
+    pdf_directory_clubs: '%kernel.root_dir%/../web/files'
     api_token: e4e83dcdf73c4b9696b5025b22e1d783
 
 framework:
@@ -101,14 +101,18 @@ hwi_oauth:
             type:                facebook
             client_id:           "113505799028922"
             client_secret:       "53841d8738f34ecb7cc82bf9bdd16115"
-            scope:               "email"
+            scope:         "email"
+            infos_url:     "https://graph.facebook.com/me?fields=id,name,email,picture.type(square)"
+            paths:
+                 email:     email
+                 profilepicture: picture.data.url
             options:
-                display: popup
+                 display:    popup
         # Google Access
         google:
             type:                google
-            client_id:           "ClientID"
-            client_secret:       "ClientIDSecret"
+            client_id:           "1032177526988.apps.googleusercontent.com"
+            client_secret:       "I8fmC6YSPsQfvXBmvt7b2TnC"
             scope:               "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             options:
                 display: popup
@@ -116,5 +120,7 @@ hwi_oauth:
         twitter:
             type:                twitter
             client_id:           "SJNXrI2ichwbSlvsBI2ZQxLcV"
-            client_secret:       "wUaXmXUftEHssvXLGJqYLemA7ryHGrPDXaTwI78vTA"
-            scope:               ""
+            client_secret:       "eTnaMCuzJHIE2UjU3yg6GQlHxZU0F6a88MzopHVoULl5qDShKv"
+            scope:               "email"
+            options:
+                 include_email: true

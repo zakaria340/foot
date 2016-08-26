@@ -18,6 +18,8 @@ class DefaultController extends Controller {
    * @Route("/", name="homepage")
    */
   public function indexAction(Request $request) {
+    $usr= $this->get('security.context')->getToken()->getUser();
+    var_dump($usr);die;
     $competitions = $this->getListCompetitions();
 
     return $this->render(
@@ -147,6 +149,12 @@ class DefaultController extends Controller {
     }
     $competitions = $this->getListCompetitions();
 
+
+    foreach($fixtures as $fixture){
+      foreach($fixture->fixtures as $c){
+        //var_dump($c->_links->homeTeam->href);die('r');
+      }
+    }
     return $this->render(
       'default/fixtures.html.twig',
       [
@@ -287,7 +295,56 @@ class DefaultController extends Controller {
       'Hertha BSC' => 'BSC',
       'SC Freiburg' => 'SCF',
       'TSG 1899 Hoffenheim' => 'TSG',
+      'Red Bull Leipzig' => 'RBL',
+
+
+      'FC Bayern München' => 'FCB',
+      'Werder Bremen' => 'SVW',
+      'FC Augsburg' => 'FCA',
+      'VfL Wolfsburg' => 'WOB',
+      'Borussia Dortmund' => 'BVB',
+      '1. FSV Mainz 05' => 'M05',
+      'Eintracht Frankfurt' => 'SGE',
+      'FC Schalke 04' => 'F04',
+      'Hamburger SV' => 'HSV',
+      'FC Ingolstadt 04' => 'FCI',
+      '1. FC Köln' => 'EFFZEH',
+      'SV Darmstadt 98' => 'DAR',
+      'Bor. Mönchengladbach' => 'BMG',
+      'Bayer Leverkusen' => 'B04',
+      'Hertha BSC' => 'BSC',
+      'SC Freiburg' => 'SCF',
+      'TSG 1899 Hoffenheim' => 'TSG',
       'Red Bull Leipzig' => 'RBL'
+
     ];
+  }
+
+  public function thumbnail($str) {
+
+    $idClub = basename($str);
+
+
+    $club = 'http://api.football-data.org/v1/teams/'.$idClub;
+    $api_token = 'e4e83dcdf73c4b9696b5025b22e1d783';
+    $reqPrefs['http']['method'] = 'GET';
+    $reqPrefs['http']['header'] = "X-Auth-Token: $api_token";
+    $stream_context = stream_context_create($reqPrefs);
+    $response = file_get_contents($club, FALSE, $stream_context);
+    $clubData = json_decode($response);
+    $wikiImage = $clubData->crestUrl;
+
+    $urlBaseW = str_replace(basename($wikiImage), '', $wikiImage);
+
+
+    $qsd = '25px-'.basename($wikiImage).'.png';
+    $name = basename($wikiImage);
+
+    $explodeurlBaseW = explode('/', $urlBaseW);
+    array_splice( $explodeurlBaseW, 5, 0, 'thumb' );
+    $urlBase = implode('/', $explodeurlBaseW);
+    $wikiImageA = "$urlBase/$name/$qsd";
+
+    return $wikiImageA;
   }
 }
