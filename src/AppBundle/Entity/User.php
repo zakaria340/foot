@@ -47,14 +47,6 @@ class User extends BaseUser
     protected $facebook_id;
 
     private $facebookAccessToken;
- 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="profile_picture", type="string", length=250, nullable=true)
-     *
-     */
-    protected $profile_picture;
 
     /**
      * @var string
@@ -62,7 +54,7 @@ class User extends BaseUser
      * @ORM\Column(name="profilepicture", type="string", length=250, nullable=true)
      *
      */
-    protected $profilepicture;
+    protected $profilePicture;
 
     /**
      * @var string

@@ -4,14 +4,30 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-        <!--[if gt IE 8]><!--><link rel="stylesheet" href="http://resources-pl.pulselive.com/ver/styles/screen.css"><!--<![endif]-->
+        <!--[if gt IE 8]><!--><link rel="stylesheet" href="http://a.espncdn.com/redesign/0.316.13/css/page.css"><!--<![endif]-->
+        <!--[if gt IE 8]><!--><link rel="stylesheet" href="http://a.espncdn.com/redesign/0.316.13/css/game-package-soccer.css"><!--<![endif]-->
+        <!--[if gt IE 8]><!--><link rel="stylesheet" href="http://a.espncdn.com/redesign/0.316.13/css/shell-desktop.css"><!--<![endif]-->
+
         <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     </head>
     <body>
     <main id="mainContent" tabindex="0">
+                <div class="more-overlay-primary"></div>
+        {{ render(controller('AppBundle:Default:menu')) }}
 
-        <img src= "{{ dump(app.user) }}" class="img-circle" alt="User Image" />
-        {% block body %}{% endblock %}
+        <section id="main-container">
+
+            <div class="main-content null">
+                <div id="gamepackage-wrap">
+                    <div class="layout-bc" id="gamepackage-content-wrap">
+                        {% block body %}{% endblock %}
+                        {% block hwi_oauth_content %}{% endblock %}
+                        </div>
+                </div>
+            </div>
+            </section>
+
+
         {% block javascripts %}{% endblock %}
     </main>
     </body>

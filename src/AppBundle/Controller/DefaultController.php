@@ -18,8 +18,6 @@ class DefaultController extends Controller {
    * @Route("/", name="homepage")
    */
   public function indexAction(Request $request) {
-    $usr= $this->get('security.context')->getToken()->getUser();
-    var_dump($usr);die;
     $competitions = $this->getListCompetitions();
 
     return $this->render(
@@ -33,6 +31,21 @@ class DefaultController extends Controller {
     );
   }
 
+  /**
+   * 
+   */
+  public function menuAction(Request $request) {
+    $competitions = $this->getListCompetitions();
+    return $this->render(
+      'default/menu.html.twig',
+      [
+        'competitions' => $competitions,
+        'base_dir' => realpath(
+          $this->getParameter('kernel.root_dir') . '/..'
+        ),
+      ]
+    );
+  }
 
   /**
    * @Route(
@@ -158,6 +171,7 @@ class DefaultController extends Controller {
     return $this->render(
       'default/fixtures.html.twig',
       [
+        'fixture' => $competitions[$code],
         'fixtures' => $fixtures,
         'code' => $code,
         'codematchs' => $code . $matchday,
@@ -176,7 +190,7 @@ class DefaultController extends Controller {
    */
   public function getListCompetitions() {
     $competitions = [
-      [
+      426=> [
         'id' => 426,
         'caption' => "Premier League 2016/17",
         "league" => "PL",
@@ -186,7 +200,7 @@ class DefaultController extends Controller {
         "numberOfTeams" => 20,
         "numberOfGames" => 380,
       ],
-      [
+      430=>[
         "id" => 430,
         "caption" => "1. Bundesliga 2016/17",
         "league" => "BL1",
@@ -196,7 +210,7 @@ class DefaultController extends Controller {
         "numberOfTeams" => 18,
         "numberOfGames" => 306,
       ],
-      [
+      436=>[
         "id" => 436,
         "caption" => "Primera Division 2016/17",
         "league" => "PD",
@@ -206,7 +220,7 @@ class DefaultController extends Controller {
         "numberOfTeams" => 20,
         "numberOfGames" => 380,
       ],
-      [
+      438=>[
         "id" => 438,
         "caption" => "Serie A 2016/17",
         "league" => "SA",

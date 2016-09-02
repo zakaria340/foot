@@ -1,0 +1,20 @@
+<nav style="display:block" class="game-package-nav nav-wrap" id="global-nav-tertiary">
+    <div class="tertiary-nav-container">
+        <ul data-behavior="more_dropdown" class="first-group">
+            <li class="sub summary active">
+                <a class="webview-internal" href="{{ path('homepage') }}">
+                    <span class="link-text">Home</span>
+                    <span class="link-text-short">Home</span>
+                </a>
+            </li>
+            {% for competition in competitions %}
+                <li class="sub summary">
+                    <a class="webview-internal" href="{{ path('fixtures', {'code': competition.id}) }}">
+                        <span class="link-text">{{ competition.caption }}</span>
+                        <span class="link-text-short">{{ competition.caption }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block hwi_oauth_content %}
+    <header class="pageHero tabbedHero ">
+        <div class="wrapper col-12">
+            <h1 class="pageTitle">Results</h1>
+            <div data-tab-wrap=".tabs" class="tabLinks left"
+                 data-widget="tabbed-content" data-script="pl_tabbed">
+                <div class="tabs">
+                    <ul class="tablist" role="tablist">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="tabbedContent">
+        <div class="wrapper col-12 active ism">
+            <div id="">
+
+
+
+
+
+                <form action="/accounts/login/" method="post" class="ism-form__login-box">
+
+                    <input type="hidden" value="4G37wkWnpQJLRMohToGtQTF64DMbI7rW" name="csrfmiddlewaretoken">
+
+                    <div class="wrapper">
+
+                        <div class="col-6">
+                            <h1>Sign In</h1>
+
+                            <div class="ism-form__group">
+                                <label for="ism-username">Email Address</label>
+                                <div class="ism-input-holder">
+                                    <input type="email" placeholder="Email Address" id="ism-email" name="login">
+                                </div>
+                            </div>
+                            <div class="ism-form__group">
+                                <label for="ism-password">Password</label>
+                                <div class="ism-input-holder">
+                                    <input type="text" data-password-element="input" placeholder="Password" id="ism-password" name="password">
+                                    <a data-password-element="button" data-password-text-hide="Hide" data-password-text-show="Show" id="ismjs-show-password" class="btn ism-show-password" href="#">Hide</a>
+                                </div>
+                            </div>
+                            <div class="ism-form__group">
+                                <a class="ism-arrow-link ism-arrow-link__login" href="/accounts/password-reset/">Forgot login details?</a>
+                                <button class="btn btn-primary" type="submit">Sign in</button>
+
+                            </div>
+
+                            <div class="ism-or">
+                                <span>or login with</span>
+                            </div>
+
+                            <div class="ism-social-login">
+                                <a class="btn ism-facebook-button" href="/accounts/facebook/login/?app=pl-web&amp;redirect_uri=https://www.premierleague.com/"><img aria-hidden="true" src="https://plusers.scdn3.secure.raxcdn.com/static/libsass/plusers/dist/img/svg/icon-facebook.svg"> Facebook</a>
+                                <a class="btn ism-twitter-button" href="/accounts/twitter/login/?app=pl-web&amp;redirect_uri=https://www.premierleague.com/"><img aria-hidden="true" src="https://plusers.scdn3.secure.raxcdn.com/static/libsass/plusers/dist/img/svg/icon-twitter.svg"> Twitter</a>
+                                <a class="btn ism-google-button" href="/accounts/google/login/?app=pl-web&amp;redirect_uri=https://www.premierleague.com/"><img aria-hidden="true" src="https://plusers.scdn3.secure.raxcdn.com/static/libsass/plusers/dist/img/svg/icon-google.svg"> Google</a>
+                            </div>
+
+                            <input type="hidden" value="pl-web" name="app">
+                            <input type="hidden" value="https://www.premierleague.com/" name="redirect_uri">
+                        </div>
+
+                        <div class="col-6">
+                            <h1 class="ism-hide--mobile">Register</h1>
+                            <div class="ism-well ism-well__reg-spacer">
+                                <h2>Don't have a Premier League account?</h2>
+                                <p>In that case, you are missing out on:</p>
+                                <ul>
+                                    <li>Fantasy Premier League football game</li>
+                                    <li>Exclusive fan services</li>
+                                    <li>Customised site content</li>
+                                    <li>Favourite Club information and notifications</li>
+                                </ul>
+                                <a class="btn-highlight btn arrow-right ism-button--full" href="/a/profile/register?app=pl-web&amp;redirect_uri=https://www.premierleague.com/">Register<span class="icn arrow-right-w"></span></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+
+                pl-web
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock hwi_oauth_content %}

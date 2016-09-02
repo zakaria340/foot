@@ -1,72 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <header class="pageHero tabbedHero ">
-        <div class="wrapper col-12">
-            <h1 class="pageTitle">Results</h1>
-            <div data-tab-wrap=".tabs" class="tabLinks left" data-widget="tabbed-content" data-script="pl_tabbed">
-                <div class="tabs">
-                    <ul class="tablist" role="tablist">
-
-                        {% for competition in competitions %}
-                            <a href="{{ path('fixtures', {'code': competition.id}) }}"> <li {% if competition.id == code %} class="active"{% endif %}>{{ competition.caption }}</li></a>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </header>
-    <div class="tabbedContent">
-        <div class="wrapper col-12 active">
-            <section class="fixtures">
-                {{ form_start(form) }}
-                {{ form_widget(form.bet, { 'attr': {'class': 'btn'} }) }}
-                {{ form_widget(form) }}
-
-                {% if dataBet.id is defined %}
-                    <input type="hidden" value="{{ dataBet.id }}"
-                           name="betuser">
-                {% endif %}
-
-                {% for key, fixturess in fixtures %}
-                    {% set date = '' %}
-                    {% for key, fixture in fixturess.fixtures %}
-                        {% if (date != fixture.date|date("l m/d/Y")) %}
-                            {% set date = fixture.date|date("l m/d/Y") %}
-                            <time class="date long"
-                                  datetime="{{ fixture.date|date("l m/d/Y") }} ">
-                                <strong>{{ fixture.date|date("l m/d/Y") }} </strong>
-                            </time>
-
-
-                            <div data-competition-matches-list="{{ fixture.date|date("l m/d/Y") }}">
-                            <div class="competition right">
-                                <span class="competitionImage1"></span>
-                                <span class="competitionLabel1">Premier League</span>
-                            </div>
-                            <ul class="matchList">
-                        {% endif %}
-
-                        <li class="matchFixtureContainer {{ fixture.status }}">
-
-                            <a class="fixture postMatch" href="#">
-                                <span class="overview">
-                                    <span class="date-match">{{ fixture.date|date("H:i") }}</span>
-                                    <span class="teams">
-                                        <span class="team"><span
-                                                    class="teamName"> {{ fixture.homeTeamName }}</span>
-                                            <span
-                                                    class="badge-25">
-                                                <img src="{{ fixture._links.homeTeam.href|GenerateThumbnail }}">
-                                            </span>
 
 
 
-                                        </span>
 
-                                        {% if fixture.status != "FINISHED" %}
-                                            <span class="score ">
+    <div class="col-b">
+        <div class="sub-module last-games soccer">
+            <header class="">
+                <h1>
+                    {{ fixture.caption }}
+                </h1>
+            </header>
+            <div class="content">
+                <table data-fix-cols="0"
+                       data-behavior="responsive_table">
+                    <thead>
+                    <tr>
+                        <th colspan="6">Current Games</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for key, fixturess in fixtures %}
+                        {% for key, fixture in fixturess.fixtures %}
+
+                            <tr>
+
+                                {% if fixture.result.goalsHomeTeam > fixture.result.goalsHomeTeam %}
+                                    <span class="score ">
                                             <input class="{{ (fixture.status != "TIMED") or (status == "1") ? 'disabled' : '' }}" name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
                                                    value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
                                                    maxlength="2" size="1">
@@ -75,62 +37,685 @@
                                                  maxlength="2" size="1">
                                             </span>
 
-                                        {% else %}
-                                            <span class="score ">{{ fixture.status }}</span>
-                                        {% endif %}
+                                {% else %}
+                                    <span class="score ">{{ fixture.status }}</span>
+                                {% endif %}
 
 
-                                        <span class="team">
-                                            <span
-                                                    class="badge-25">
-                                                 <img src="{{ fixture._links.awayTeam.href|GenerateThumbnail }}">
-                                            </span> <span
-                                                    class="teamName">{{ fixture.awayTeamName }}</span></span>
-                                    </span>
-    <span class="stadiumName detail-predicts">
+                                <td class="loss">L</td>
+                                <td>
+                                    <a name="{{ fixture.homeTeamName }}"
+                                       href="#">
+                                        <span class="long-name">{{ fixture.homeTeamName }}</span>
+                                        <abbr>{{ fixture.homeTeamName }}</abbr>
+                                    </a>
+                                </td>
+                                <td class="logo">
+                                    <a href="">
+                                        <picture>
+                                            <source srcset="{{ fixture._links.homeTeam.href|GenerateThumbnail }}"
+                                                    data-srcset="{{ fixture._links.homeTeam.href|GenerateThumbnail }}">
+                                            </source>
+                                            <img data-default-src="{{ fixture._links.homeTeam.href|GenerateThumbnail }}"
+                                                 class="lazyloaded imageLoaded">
+                                        </picture>
+                                    </a>
+                                    <span class="scoreMatch">{{ fixture.result.goalsHomeTeam }}</span>
+                                </td>
 
-               {% if  fixture.odds is defined %}<span>Odd's Of Winning home <strong>{{ fixture.odds.homeWin }}</strong></span>
-                                        <span>Odd's Of draw <strong>{{ fixture.odds.draw }}</strong></span>
-                                        <span>Odd's Of Winning away <strong>{{ fixture.odds.awayWin }}</strong></span>
-               {% endif %}
-
-                            <span class="predict-prc">
-
-                                {% if dataBet.scores is defined and attribute(dataBet.scores, codematchs ~ key).resultMatch is not null %}
-                                    <strong>{{ attribute(dataBet.scores, codematchs ~ key).BetScors|trim }}% </strong> bet same score{% endif %}
-                            </span>
-
-    <span class="predict-prc">
-        {% if dataBet.scores is defined and attribute(dataBet.scores, codematchs ~ key).resultMatch is not null %}
-            <strong>{{ attribute(dataBet.scores, codematchs ~ key).resultMatch|trim }}% </strong>  bet same result{% endif %}
-    </span>
-
-
-                                </span>
-                                    {% if fixture.status != "TIMED" and fixture.status != "SCHEDULED" %}
-
-                                    <span class="odds">
-                                        <span class="odds-scrore"> ({{ fixture.result.goalsHomeTeam }}</span>
-                                        <span class="oddsDraw">-</span>
-                                        <span class="odds-scrore">{{ fixture.result.goalsAwayTeam }})</span>
-
-                                    </span>
-                                    {% endif %}
-                                </span>
-                            </a>
-                        </li>
-
-                        {% if (date != fixture.date|date("l m/d/Y")) %}
-                            </ul>
-
-                            </div>
-                        {% endif %}
+                                <td>
+                                    <input class="{{ (fixture.status != "TIMED") or (status == "1") ? 'disabled' : '' }}" name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                           value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreHome|trim }}{% endif %}"
+                                           maxlength="2" size="1">
+                                    -
+                                    <input class="{{ (fixture.status != "TIMED") or (status == "1") ? 'disabled' : '' }}" name="{{ codematchs ~ key }}[scoreHome]" {{ (fixture.status != "TIMED") or (status == "1") ? 'disabled=""' : '' }}
+                                                                                  value="{% if dataBet.scores is defined %}{{ attribute(dataBet.scores, codematchs ~ key).scoreAway|trim }}{% endif %}"
+                                                                                  maxlength="2" size="1">
+                                </td>
+                                <td class="logo">
+                                    <span class="scoreMatch">{{ fixture.result.goalsAwayTeam }}</span>
+                                    <a href="#">
+                                        <picture>
+                                            <source srcset="{{ fixture._links.awayTeam.href|GenerateThumbnail }}"
+                                                    data-srcset="{{ fixture._links.awayTeam.href|GenerateThumbnail }}">
+                                            </source>
+                                            <img data-default-src="{{ fixture._links.awayTeam.href|GenerateThumbnail }}"
+                                                 class="lazyloaded imageLoaded">
+                                        </picture>
+                                    </a>
+                                </td>
+                                <td><a name="{{ fixture.awayTeamName }}"
+                                       href="#"><span
+                                                class="long-name">{{ fixture.awayTeamName }}</span><abbr>{{ fixture.awayTeamName }}</abbr></a>
+                                </td>
+                                <td>
+								<span data-date="{{ fixture.date }}"
+                                      data-behavior="date_time">
+									<span class="game-date"
+                                          data-dateformat="date1"
+                                          data-showtimezone="false">{{ fixture.date|date("H:i") }}</span>
+								</span>
+                                </td>
+                                {% if  fixture.odds is defined %}
+                                    <td class="competition">
+                                        <ul>
+                                            <li>Odd's Of Winning home
+                                                <strong>{{ fixture.odds.homeWin }}</strong>
+                                            </li>
+                                            <li>Odd's Of draw
+                                                <strong>{{ fixture.odds.draw }}</strong>
+                                            </li>
+                                            <li>Odd's Of Winning away
+                                                <strong>{{ fixture.odds.awayWin }}</strong>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
-
-                {% endfor %}
-                {{ form_end(form) }}
-
-            </section>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <div class="col-c">
+        <div data-module="leagueTable"
+             id="gamepackage-soccer-league-table">
+            <article data-behavior="soccer_league_table"
+                     class="sub-module">
+                <header>
+                    <h1>Primera División de El Salvador
+                        Standings</h1>
+                </header>
+                <div class="content">
+                    <table cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>POS</th>
+                            <th>Team</th>
+
+
+                            <th class="right">GP</th>
+
+
+                            <th class="right">GD</th>
+
+
+                            <th class="right">PTS</th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr data-team="CD FAS">
+
+                            <td data-col="rank">
+
+                                1
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/7229"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">CD
+                                    FAS</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                +2
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                9
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Pasaquina FC">
+
+                            <td data-col="rank">
+
+                                2
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/17562"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Pasaquina
+                                    FC</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                +1
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                7
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Aguila">
+
+                            <td data-col="rank">
+
+                                3
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/7226"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Aguila</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                +1
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                6
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Metapan">
+
+                            <td data-col="rank">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/7224"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Metapan</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                +1
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                6
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Universidad de El Salvador">
+
+                            <td data-col="rank">
+
+                                5
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/11057"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Universidad
+                                    de El Salvador</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                0
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                5
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="CD Sonsonate">
+
+                            <td data-col="rank">
+
+                                6
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/17932"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">CD
+                                    Sonsonate</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                +1
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                5
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Luis Angel Firpo">
+
+                            <td data-col="rank">
+
+                                7
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/7232"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Luis
+                                    Angel Firpo</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                0
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                5
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Santa Tecla">
+
+                            <td data-col="rank">
+
+                                8
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/13301"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Santa
+                                    Tecla</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                0
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                5
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Municipal Limeño">
+
+                            <td data-col="rank">
+
+                                9
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/7231"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Municipal
+                                    Limeño</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                -2
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                4
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Chalatenango">
+
+                            <td data-col="rank">
+
+                                10
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/17933"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Chalatenango</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                -4
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                4
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="Alianza FC">
+
+                            <td data-col="rank">
+
+                                11
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/7225"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">Alianza
+                                    FC</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                +1
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                3
+
+
+                            </td>
+
+                        </tr>
+
+                        <tr data-team="CD Dragon">
+
+                            <td data-col="rank">
+
+                                12
+
+
+                            </td>
+
+                            <td data-col="team">
+
+                                <a href="http://www.espn.co.uk/football/club/_/id/15719"
+                                   name="&amp;lpos=soccer:game:matchstats:post:table:team">CD
+                                    Dragon</a>
+
+
+                            </td>
+
+                            <td data-col="gamesPlayed"
+                                class="right">
+
+                                4
+
+
+                            </td>
+
+                            <td data-col="pointDifferential"
+                                class="right">
+
+                                -1
+
+
+                            </td>
+
+                            <td data-col="points" class="right">
+
+                                3
+
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <footer>
+
+                    <a href="/football/table/_/league/slv.1"
+                       name="&amp;lpos=soccer:game:matchstats:post:table:fulltable">Full
+                        Table</a>
+                </footer>
+
+            </article>
+
+        </div>
+
+        <div data-module="teamLeagueNews"
+             id="gamepackage-team-league-news">
+
+            <article class="sub-module sub-module-news">
+                <header>
+                    <h1>Primera División News</h1>
+                </header>
+                <ul class="content">
+                    <li class="text-container no-thumb">
+                        <figure class="feed-item-figure">
+                            <div class="img-wrap"><img
+                                        data-src="http://a1.espncdn.com/combiner/i?img=/photo/2015/1221/r38057_1296x729_16-9.jpg&amp;w=180&amp;h=-1&amp;scale=crop&amp;location=origin"
+                                        class="lazyloaded imageLoaded"
+                                        src="http://a1.espncdn.com/combiner/i?img=/photo/2015/1221/r38057_1296x729_16-9.jpg&amp;w=180&amp;h=-1&amp;scale=crop&amp;location=origin">
+                            </div>
+                        </figure>
+                        <h2>
+                            <a href="/football/soccer-transfers/story/2780780/luis-suarezs-brother-diego-gets-isidro-metapan-trial"
+                               name="&amp;lpos=soccer:game:matchstats:post:soccernews:1">Luis
+                                Suarez's brother Diego gets
+                                Isidro Metapan trial</a></h2>
+                        <p>Metapan general manager Fredy Vega
+                            said that the final decision is up
+                            to coach Jorge "Zarco"
+                            Rodriguez.</p></li>
+                </ul>
+
+                <footer>
+                    <a href="/football/" class="view-more"
+                       name="&amp;lpos=soccer:game:matchstats:league:news:all">
+                        All Football News
+                    </a>
+                </footer>
+
+            </article>
+
+        </div>
+    </div>
+
 {% endblock %}
